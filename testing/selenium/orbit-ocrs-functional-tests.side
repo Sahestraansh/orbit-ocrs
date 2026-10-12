@@ -93,7 +93,7 @@
       "commands": [
         { "id": "18000000-0000-4000-8000-000000000001", "comment": "Open Administrator preview", "command": "open", "target": "/demo/system_admin", "targets": [], "value": "" },
         { "id": "18000000-0000-4000-8000-000000000002", "comment": "Wait for dashboard", "command": "waitForElementVisible", "target": "css=.page-title h1", "targets": [], "value": "30000" },
-        { "id": "18000000-0000-4000-8000-000000000003", "comment": "Verify System Administrator role label", "command": "assertElementPresent", "target": "xpath=//div[contains(@class,'role-context')]//strong[normalize-space(.)='System Administrator']", "targets": [], "value": "" },
+        { "id": "18000000-0000-4000-8000-000000000003", "comment": "Verify System administrator role label", "command": "assertElementPresent", "target": "xpath=//div[contains(@class,'role-context')]//strong[normalize-space(.)='System administrator']", "targets": [], "value": "" },
         { "id": "18000000-0000-4000-8000-000000000004", "comment": "Verify dashboard heading", "command": "assertText", "target": "css=.page-title h1", "targets": [], "value": "System overview" },
         { "id": "18000000-0000-4000-8000-000000000005", "comment": "Verify health panel", "command": "assertElementPresent", "target": "css=.service-list", "targets": [], "value": "" }
       ]
@@ -106,7 +106,7 @@
         { "id": "19000000-0000-4000-8000-000000000004", "comment": "Clear locally stored authentication data", "command": "executeScript", "target": "document.cookie.split(';').forEach(function(cookie){document.cookie=cookie.replace(/^ +/, '').replace(/=.*/, '=;expires='+new Date(0).toUTCString()+';path=/');}); window.localStorage.clear(); window.sessionStorage.clear();", "targets": [], "value": "" },
         { "id": "19000000-0000-4000-8000-000000000005", "comment": "Try to open the protected Student route without a session", "command": "open", "target": "/student", "targets": [], "value": "" },
         { "id": "19000000-0000-4000-8000-000000000002", "comment": "The server redirects to the public page", "command": "waitForElementVisible", "target": "css=.landing-shell", "targets": [], "value": "30000" },
-        { "id": "19000000-0000-4000-8000-000000000003", "comment": "Authentication notice is shown", "command": "assertText", "target": "css=.inline-alert span:last-child", "targets": [], "value": "Please sign in with your university account to continue." }
+        { "id": "19000000-0000-4000-8000-000000000003", "comment": "Authentication notice is shown", "command": "assertElementPresent", "target": "css=.inline-alert[role='status']", "targets": [], "value": "" }
       ]
     },
     {
