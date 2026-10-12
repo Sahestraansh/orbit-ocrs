@@ -1,0 +1,146 @@
+{
+  "id": "65b797aa-4471-4a1d-9be2-0811df32bc01",
+  "version": "2.0",
+  "name": "Orbit OCRS Functional Testing",
+  "url": "http://localhost:3000",
+  "tests": [
+    {
+      "id": "65b797aa-4471-4a1d-9be2-0811df32bc11",
+      "name": "FT-01 - Landing page loads",
+      "commands": [
+        { "id": "11000000-0000-4000-8000-000000000001", "comment": "Open the public entry page", "command": "open", "target": "/", "targets": [], "value": "" },
+        { "id": "11000000-0000-4000-8000-000000000002", "comment": "Use a normal laptop viewport", "command": "setWindowSize", "target": "1512x949", "targets": [], "value": "" },
+        { "id": "11000000-0000-4000-8000-000000000003", "comment": "Wait for the app shell", "command": "waitForElementVisible", "target": "css=.landing-shell", "targets": [], "value": "30000" },
+        { "id": "11000000-0000-4000-8000-000000000004", "comment": "Verify the browser title", "command": "assertTitle", "target": "Orbit · Course registration", "targets": [], "value": "" },
+        { "id": "11000000-0000-4000-8000-000000000005", "comment": "Verify the local sign-in entry", "command": "assertElementPresent", "target": "linkText=Sign in to the local system", "targets": [], "value": "" },
+        { "id": "11000000-0000-4000-8000-000000000006", "comment": "Verify all role previews are present", "command": "assertElementPresent", "target": "css=.role-grid a[href='/demo/student']", "targets": [], "value": "" }
+      ]
+    },
+    {
+      "id": "65b797aa-4471-4a1d-9be2-0811df32bc12",
+      "name": "FT-02 - Student preview opens",
+      "commands": [
+        { "id": "12000000-0000-4000-8000-000000000001", "comment": "Open the landing page", "command": "open", "target": "/", "targets": [], "value": "" },
+        { "id": "12000000-0000-4000-8000-000000000002", "comment": "Open Student preview", "command": "click", "target": "css=.role-grid a[href='/demo/student']", "targets": [], "value": "" },
+        { "id": "12000000-0000-4000-8000-000000000003", "comment": "Wait for the role workspace", "command": "waitForElementVisible", "target": "css=.role-context strong", "targets": [], "value": "30000" },
+        { "id": "12000000-0000-4000-8000-000000000004", "comment": "Confirm RBAC context label", "command": "assertText", "target": "css=.role-context strong", "targets": [], "value": "Student" },
+        { "id": "12000000-0000-4000-8000-000000000005", "comment": "Preview must explain that writes are disabled", "command": "assertElementPresent", "target": "css=.demo-banner", "targets": [], "value": "" }
+      ]
+    },
+    {
+      "id": "65b797aa-4471-4a1d-9be2-0811df32bc13",
+      "name": "FT-03 - Course search filters CSV data",
+      "commands": [
+        { "id": "13000000-0000-4000-8000-000000000001", "comment": "Open Student preview", "command": "open", "target": "/demo/student", "targets": [], "value": "" },
+        { "id": "13000000-0000-4000-8000-000000000002", "comment": "Open the course catalogue", "command": "click", "target": "css=button[data-nav='catalog']", "targets": [], "value": "" },
+        { "id": "13000000-0000-4000-8000-000000000003", "comment": "Wait for the React search input", "command": "waitForElementVisible", "target": "css=input[aria-label='Search courses']", "targets": [], "value": "30000" },
+        { "id": "13000000-0000-4000-8000-000000000004", "comment": "Set the controlled input without macOS initKeyEvent", "command": "executeScript", "target": "const el=document.querySelector('input[aria-label=\"Search courses\"]'); const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set; setter.call(el,'MGT305'); el.dispatchEvent(new Event('input',{bubbles:true}));", "targets": [], "value": "" },
+        { "id": "13000000-0000-4000-8000-000000000005", "comment": "Confirm the matching CSV-backed course is displayed", "command": "waitForElementVisible", "target": "xpath=//button[contains(@class,'course-row')][contains(.,'MGT305')]", "targets": [], "value": "30000" },
+        { "id": "13000000-0000-4000-8000-000000000006", "comment": "Unrelated course must be filtered out", "command": "assertElementNotPresent", "target": "xpath=//button[contains(@class,'course-row')][contains(.,'CSE301')]", "targets": [], "value": "" }
+      ]
+    },
+    {
+      "id": "65b797aa-4471-4a1d-9be2-0811df32bc14",
+      "name": "FT-04 - Course details drawer opens",
+      "commands": [
+        { "id": "14000000-0000-4000-8000-000000000001", "comment": "Open Student preview", "command": "open", "target": "/demo/student", "targets": [], "value": "" },
+        { "id": "14000000-0000-4000-8000-000000000002", "comment": "Open catalogue", "command": "click", "target": "css=button[data-nav='catalog']", "targets": [], "value": "" },
+        { "id": "14000000-0000-4000-8000-000000000003", "comment": "Open CSE301", "command": "click", "target": "xpath=//button[contains(@class,'course-row')][contains(.,'CSE301')]", "targets": [], "value": "" },
+        { "id": "14000000-0000-4000-8000-000000000004", "comment": "Wait for the accessible drawer", "command": "waitForElementVisible", "target": "css=aside.course-drawer", "targets": [], "value": "30000" },
+        { "id": "14000000-0000-4000-8000-000000000005", "comment": "Verify the selected course code", "command": "assertText", "target": "css=.course-drawer h2", "targets": [], "value": "CSE301" },
+        { "id": "14000000-0000-4000-8000-000000000006", "comment": "Verify capacity details are visible", "command": "assertElementPresent", "target": "css=.course-drawer .detail-grid", "targets": [], "value": "" }
+      ]
+    },
+    {
+      "id": "65b797aa-4471-4a1d-9be2-0811df32bc15",
+      "name": "FT-05 - Preview registration updates schedule",
+      "commands": [
+        { "id": "15000000-0000-4000-8000-000000000001", "comment": "Open Student preview", "command": "open", "target": "/demo/student", "targets": [], "value": "" },
+        { "id": "15000000-0000-4000-8000-000000000002", "comment": "Open catalogue", "command": "click", "target": "css=button[data-nav='catalog']", "targets": [], "value": "" },
+        { "id": "15000000-0000-4000-8000-000000000003", "comment": "Search safely without sendKeys", "command": "executeScript", "target": "const el=document.querySelector('input[aria-label=\"Search courses\"]'); const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set; setter.call(el,'MGT305'); el.dispatchEvent(new Event('input',{bubbles:true}));", "targets": [], "value": "" },
+        { "id": "15000000-0000-4000-8000-000000000004", "comment": "Open MGT305 details", "command": "click", "target": "xpath=//button[contains(@class,'course-row')][contains(.,'MGT305')]", "targets": [], "value": "" },
+        { "id": "15000000-0000-4000-8000-000000000005", "comment": "Register in preview state", "command": "click", "target": "xpath=//aside[contains(@class,'course-drawer')]//button[contains(.,'Add to my schedule')]", "targets": [], "value": "" },
+        { "id": "15000000-0000-4000-8000-000000000006", "comment": "Confirm feedback toast", "command": "waitForElementVisible", "target": "css=.toast[role='status']", "targets": [], "value": "30000" },
+        { "id": "15000000-0000-4000-8000-000000000007", "comment": "Open the schedule", "command": "click", "target": "xpath=//nav[@aria-label='Student workspace']//button[.//span[normalize-space()='My schedule']]", "targets": [], "value": "" },
+        { "id": "15000000-0000-4000-8000-000000000008", "comment": "Course is now visible in the schedule", "command": "waitForElementVisible", "target": "xpath=//*[contains(@class,'schedule-event')]//strong[normalize-space()='MGT305']", "targets": [], "value": "30000" }
+      ]
+    },
+    {
+      "id": "65b797aa-4471-4a1d-9be2-0811df32bc16",
+      "name": "FT-06 - Faculty workspace displays linked catalogue",
+      "commands": [
+        { "id": "16000000-0000-4000-8000-000000000001", "comment": "Open Faculty preview", "command": "open", "target": "/demo/faculty", "targets": [], "value": "" },
+        { "id": "16000000-0000-4000-8000-000000000002", "comment": "Wait for role context", "command": "waitForElementVisible", "target": "css=.role-context strong", "targets": [], "value": "30000" },
+        { "id": "16000000-0000-4000-8000-000000000003", "comment": "Verify role", "command": "assertText", "target": "css=.role-context strong", "targets": [], "value": "Faculty" },
+        { "id": "16000000-0000-4000-8000-000000000004", "comment": "Verify the chosen faculty identity", "command": "assertText", "target": "css=.page-title h1", "targets": [], "value": "Welcome back, Dr. Arjun Menon" },
+        { "id": "16000000-0000-4000-8000-000000000005", "comment": "Verify assigned classes render", "command": "assertElementPresent", "target": "css=.compact-course", "targets": [], "value": "" }
+      ]
+    },
+    {
+      "id": "65b797aa-4471-4a1d-9be2-0811df32bc17",
+      "name": "FT-07 - Registrar dashboard displays live metrics",
+      "commands": [
+        { "id": "17000000-0000-4000-8000-000000000001", "comment": "Open Registrar preview", "command": "open", "target": "/demo/registrar", "targets": [], "value": "" },
+        { "id": "17000000-0000-4000-8000-000000000002", "comment": "Wait for dashboard", "command": "waitForElementVisible", "target": "css=.page-title h1", "targets": [], "value": "30000" },
+        { "id": "17000000-0000-4000-8000-000000000003", "comment": "Verify role", "command": "assertText", "target": "css=.role-context strong", "targets": [], "value": "Registrar" },
+        { "id": "17000000-0000-4000-8000-000000000004", "comment": "Verify dashboard heading", "command": "assertText", "target": "css=.page-title h1", "targets": [], "value": "Registration control centre" },
+        { "id": "17000000-0000-4000-8000-000000000005", "comment": "Metrics are calculated from imported sections", "command": "assertElementPresent", "target": "css=.metric-grid .metric-card", "targets": [], "value": "" }
+      ]
+    },
+    {
+      "id": "65b797aa-4471-4a1d-9be2-0811df32bc18",
+      "name": "FT-08 - Administrator workspace opens",
+      "commands": [
+        { "id": "18000000-0000-4000-8000-000000000001", "comment": "Open Administrator preview", "command": "open", "target": "/demo/system_admin", "targets": [], "value": "" },
+        { "id": "18000000-0000-4000-8000-000000000002", "comment": "Wait for dashboard", "command": "waitForElementVisible", "target": "css=.page-title h1", "targets": [], "value": "30000" },
+        { "id": "18000000-0000-4000-8000-000000000003", "comment": "Verify role label", "command": "assertText", "target": "css=.role-context strong", "targets": [], "value": "Administrator" },
+        { "id": "18000000-0000-4000-8000-000000000004", "comment": "Verify dashboard heading", "command": "assertText", "target": "css=.page-title h1", "targets": [], "value": "System overview" },
+        { "id": "18000000-0000-4000-8000-000000000005", "comment": "Verify health panel", "command": "assertElementPresent", "target": "css=.service-list", "targets": [], "value": "" }
+      ]
+    },
+    {
+      "id": "65b797aa-4471-4a1d-9be2-0811df32bc19",
+      "name": "FT-09 - Protected route requires authentication",
+      "commands": [
+        { "id": "19000000-0000-4000-8000-000000000001", "comment": "Try to open the protected Student route without a session", "command": "open", "target": "/student", "targets": [], "value": "" },
+        { "id": "19000000-0000-4000-8000-000000000002", "comment": "The server redirects to the public page", "command": "waitForElementVisible", "target": "css=.landing-shell", "targets": [], "value": "30000" },
+        { "id": "19000000-0000-4000-8000-000000000003", "comment": "Authentication notice is shown", "command": "assertText", "target": "css=.inline-alert span:last-child", "targets": [], "value": "Please sign in with your university account to continue." }
+      ]
+    },
+    {
+      "id": "65b797aa-4471-4a1d-9be2-0811df32bc20",
+      "name": "FT-10 - Mobile navigation is usable",
+      "commands": [
+        { "id": "20000000-0000-4000-8000-000000000001", "comment": "Open Student preview", "command": "open", "target": "/demo/student", "targets": [], "value": "" },
+        { "id": "20000000-0000-4000-8000-000000000002", "comment": "Use a mobile viewport", "command": "setWindowSize", "target": "390x844", "targets": [], "value": "" },
+        { "id": "20000000-0000-4000-8000-000000000003", "comment": "Mobile menu button must be available", "command": "waitForElementVisible", "target": "css=button[aria-label='Open navigation']", "targets": [], "value": "30000" },
+        { "id": "20000000-0000-4000-8000-000000000004", "comment": "Open navigation", "command": "click", "target": "css=button[aria-label='Open navigation']", "targets": [], "value": "" },
+        { "id": "20000000-0000-4000-8000-000000000005", "comment": "Responsive sidebar becomes visible", "command": "waitForElementVisible", "target": "css=.sidebar.open", "targets": [], "value": "30000" },
+        { "id": "20000000-0000-4000-8000-000000000006", "comment": "Course catalogue remains reachable", "command": "assertElementPresent", "target": "css=.sidebar.open button[data-nav='catalog']", "targets": [], "value": "" }
+      ]
+    }
+  ],
+  "suites": [
+    {
+      "id": "65b797aa-4471-4a1d-9be2-0811df32bc99",
+      "name": "Orbit OCRS - Complete Functional Suite",
+      "persistSession": false,
+      "parallel": false,
+      "timeout": 300,
+      "tests": [
+        "65b797aa-4471-4a1d-9be2-0811df32bc11",
+        "65b797aa-4471-4a1d-9be2-0811df32bc12",
+        "65b797aa-4471-4a1d-9be2-0811df32bc13",
+        "65b797aa-4471-4a1d-9be2-0811df32bc14",
+        "65b797aa-4471-4a1d-9be2-0811df32bc15",
+        "65b797aa-4471-4a1d-9be2-0811df32bc16",
+        "65b797aa-4471-4a1d-9be2-0811df32bc17",
+        "65b797aa-4471-4a1d-9be2-0811df32bc18",
+        "65b797aa-4471-4a1d-9be2-0811df32bc19",
+        "65b797aa-4471-4a1d-9be2-0811df32bc20"
+      ]
+    }
+  ],
+  "urls": ["http://localhost:3000"],
+  "plugins": []
+}
