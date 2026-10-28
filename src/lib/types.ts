@@ -19,13 +19,6 @@ export type Course = {
   status?: "open" | "waitlist" | "closed";
 };
 
-export type Notice = {
-  id: string;
-  title: string;
-  body: string;
-  tone: "info" | "success" | "warning";
-};
-
 export const roleLabels: Record<AppRole, string> = {
   student: "Student",
   faculty: "Faculty",

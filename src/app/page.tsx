@@ -1,14 +1,14 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, CalendarDays, CheckCircle2, Database, GraduationCap, LockKeyhole, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, CalendarDays, Database, GraduationCap, LockKeyhole, ShieldCheck } from "lucide-react";
 import { signInWithUniversitySSO } from "@/app/auth/actions";
 import { hasSupabaseConfig } from "@/lib/supabase/config";
 import { isLocalAuthMode } from "@/lib/supabase/admin";
 
 const roleCards = [
-  { role: "student", label: "Student", note: "Plan a term, add courses, and manage your waitlist.", icon: GraduationCap },
-  { role: "faculty", label: "Faculty", note: "View assigned classes and focused roster details.", icon: BookOpen },
-  { role: "registrar", label: "Registrar", note: "Manage offerings, registration windows, and reports.", icon: CalendarDays },
-  { role: "system_admin", label: "Administrator", note: "Control access, monitor integrations, and audit changes.", icon: ShieldCheck },
+  { role: "student", label: "Student", note: "Search sections, compare meeting times, and draft a schedule.", icon: GraduationCap },
+  { role: "faculty", label: "Faculty", note: "Review assigned sections and current enrollment counts.", icon: BookOpen },
+  { role: "registrar", label: "Registrar", note: "Review published offerings, capacity, and reports.", icon: CalendarDays },
+  { role: "system_admin", label: "Administrator", note: "Review account roles and recorded audit events.", icon: ShieldCheck },
 ] as const;
 
 type HomeProps = { searchParams: Promise<Record<string, string | string[] | undefined>> };
@@ -36,16 +36,16 @@ export default async function Home({ searchParams }: HomeProps) {
           <span>Orbit</span>
         </Link>
         <div className="nav-meta">
-          <span className="service-chip"><span className="status-dot" /> All systems normal</span>
-          <a href="#help">Help</a>
+          <span className="service-chip"><span className="status-dot" /> {localMode ? "Local demo" : "University access"}</span>
+          <a href="#demo">Role previews</a>
         </div>
       </nav>
 
       <section className="hero-grid">
         <div className="hero-copy">
-          <div className="eyebrow"><Sparkles size={15} /> Registration, without the rush</div>
-          <h1>Your semester,<br /><em>beautifully organised.</em></h1>
-          <p className="hero-lede">Find the right courses, build a conflict-free schedule, and register with confidence—all in one calm workspace.</p>
+          <div className="eyebrow">Course registration workspace</div>
+          <h1>Plan your term,<br /><em>one course at a time.</em></h1>
+          <p className="hero-lede">Search current sections, compare meeting times and check seat availability before you register.</p>
 
           {(setupMessage || authMessage) && (
             <div className="inline-alert" role="status">
@@ -65,37 +65,16 @@ export default async function Home({ searchParams }: HomeProps) {
           )}
           <p className="signin-note">{localMode ? "The database, API, and accounts are running only on this Mac." : "Secure access for students, faculty, and university teams."}</p>
 
-          <div className="trust-row" aria-label="Platform benefits">
-            <span><CheckCircle2 size={17} /> Live seat availability</span>
-            <span><CheckCircle2 size={17} /> Conflict checks</span>
-            <span><CheckCircle2 size={17} /> Accessible by design</span>
-          </div>
         </div>
 
-        <div className="schedule-preview" aria-label="Example weekly schedule">
-          <div className="preview-topbar">
-            <div><span className="preview-kicker">My week</span><strong>Fall semester</strong></div>
-            <span className="credit-pill">13 credits</span>
-          </div>
-          <div className="mini-calendar">
-            <div className="time-col"><span>9 AM</span><span>11 AM</span><span>1 PM</span><span>3 PM</span></div>
-            {[
-              { day: "MON", blocks: [["CSE301", "DBMS", "mint"], ["CSE315", "Web Engineering", "blue"]] },
-              { day: "TUE", blocks: [["STA210", "Probability", "gold"], ["HUM102", "Ethics", "rose"]] },
-              { day: "WED", blocks: [["CSE301", "DBMS", "mint"], ["CSE315", "Web Engineering", "blue"]] },
-              { day: "THU", blocks: [["STA210", "Probability", "gold"], ["", "Open study", "ghost"]] },
-            ].map((column) => (
-              <div className="day-col" key={column.day}>
-                <span className="day-name">{column.day}</span>
-                {column.blocks.map(([code, title, color], index) => (
-                  <div className={`class-block ${color}`} key={`${column.day}-${title}`} style={{ marginTop: index ? 28 : 8 }}>
-                    <strong>{code || "Free"}</strong><small>{title}</small>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-          <div className="preview-footer"><span><span className="tiny-avatar">ST</span> Schedule ready to review</span><CheckCircle2 size={20} /></div>
+        <div className="workflow-card" aria-label="How course registration works">
+          <span className="workflow-label">A clearer way to register</span>
+          <ol>
+            <li><span>01</span><div><strong>Find a section</strong><small>Search the current catalogue by course or instructor.</small></div></li>
+            <li><span>02</span><div><strong>Check your week</strong><small>Compare meeting times and spot clashes in a draft plan.</small></div></li>
+            <li><span>03</span><div><strong>Register when ready</strong><small>The server checks eligibility and availability before saving.</small></div></li>
+          </ol>
+          <p>Draft planning is separate from live registration, so exploring options won’t change your enrolment.</p>
         </div>
       </section>
 
@@ -116,9 +95,8 @@ export default async function Home({ searchParams }: HomeProps) {
       </section>
 
       <footer className="landing-footer" id="help">
-        <span>© 2026 Orbit University Services</span>
-        <span><LockKeyhole size={14} /> Protected by university SSO</span>
-        <span>Accessibility · Privacy · Support</span>
+        <span>Orbit OCRS · course-registration prototype</span>
+        <span><LockKeyhole size={14} /> {localMode ? "Local demo data" : "University sign-in"}</span>
       </footer>
     </main>
   );
